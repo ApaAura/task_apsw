@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { NavLink, Navigate, Route, Routes } from 'react-router-dom'
+import { NavLink, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { Activity, ArrowUpRight, CheckSquare, FolderKanban, LayoutDashboard, Plus, Settings2, Sparkles } from 'lucide-react'
 import Dashboard from './pages/Dashboard'
 import Tasks from './pages/Tasks'
@@ -12,16 +12,27 @@ import { api } from './api'
 export default function App() {
   const [projects, setProjects] = useState([])
   const [apiError, setApiError] = useState(false)
-
+  const [taskCount, setTaskCount] = useState(null)
+  const location = useLocation()
   useEffect(() => {
     api.getProjects().then(setProjects).catch(() => setApiError(true))
   }, [])
-
+  useEffect(() => {
+  api.getTasks()
+    .then((tasks) => setTaskCount(tasks.length))
+    .catch(() => setTaskCount(null))
+}, [location.pathname])
   const navItems = [
     { to: '/', label: 'Overview', icon: LayoutDashboard, end: true },
     { to: '/tasks', label: 'Tasks', icon: CheckSquare },
     { to: '/projects', label: 'Projects', icon: FolderKanban },
   ]
+
+  const today = new Date().toLocaleDateString('en-GB', {
+  weekday: 'long',
+  month: 'long',
+  day: 'numeric',
+  })
 
   return (
     <div className="app-shell">
@@ -40,7 +51,7 @@ export default function App() {
           {navItems.map(({ to, label, icon: Icon, end }) => (
             <NavLink key={to} to={to} end={end} className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
               <Icon size={18} /><span>{label}</span>
-              {label === 'Tasks' && <span className="nav-count">7</span>}
+              {label === 'Tasks' && taskCount !== null && <span className="nav-count">{taskCount}</span>}
             </NavLink>
           ))}
         </nav>
@@ -72,7 +83,7 @@ export default function App() {
         {apiError && <div className="api-warning">Could not connect to the local API. Start it with <code>npm run api</code>.</div>}
         <header className="topbar">
           <div className="breadcrumbs"><span>Workspace</span><span className="crumb-slash">/</span><strong>My workspace</strong></div>
-          <div className="topbar-actions"><span className="today-label">Thursday, October 15</span><div className="top-avatar">DP</div></div>
+          <div className="topbar-actions"><span className="today-label">{today}</span><div className="top-avatar">DP</div></div>
         </header>
         <div className="page-wrap">
           <Routes>
