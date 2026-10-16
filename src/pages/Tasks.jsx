@@ -33,7 +33,7 @@ export default function Tasks() {
   return (
     <div className="page-content">
       <SectionHeading eyebrow="YOUR WORKSPACE" title="All tasks" description="Keep track of the details that move your projects forward." action="Create task" to="/tasks/new" />
-      <div className="task-summary-strip"><div className="summary-icon"><ListTodo size={19} /></div><div><strong>{tasks.length} tasks in your workspace</strong><span>Stay focused on what matters most.</span></div><div className="summary-spacer" /><span className="summary-completed">{tasks.filter(t => t.status === 'Done').length} completed</span></div>
+      <div className="task-summary-strip"><div className="summary-icon"><ListTodo size={19} /></div><div><strong>{filteredTasks.length} tasks displayed</strong><span>Stay focused on what matters most.</span></div><div className="summary-spacer" /><span className="summary-completed">{filteredTasks.filter(t => t.status === 'Done').length} completed</span></div>
       <div className="card tasks-card">
         <div className="task-toolbar">
           <div className="search-wrap"><Search size={17} /><input aria-label="Search tasks" placeholder="Search tasks or people..." value={search} onChange={(e) => setSearch(e.target.value)} /></div>
