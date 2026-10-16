@@ -20,5 +20,5 @@ export default function NewTask() {
     }
   }
 
-  return <div className="page-content narrow-page"><SectionHeading eyebrow="TASK MANAGEMENT" title="Create a task" description="Break your next big idea into a clear, actionable step." />{error && <div className="form-error">{error}</div>}<TaskForm projects={projects} onSubmit={createTask} submitLabel="Create task" /></div>
+  return <div className="page-content narrow-page"><SectionHeading eyebrow="TASK MANAGEMENT" title="Create a task" description="Break your next big idea into a clear, actionable step." />{error && <div className="form-error">{error}</div>}{projects.length > 0 && <TaskForm projects={projects} onSubmit={createTask} submitLabel="Create task" />}</div>
 }

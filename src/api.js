@@ -2,8 +2,8 @@ const API_URL = 'http://localhost:3001'
 
 async function request(path, options = {}) {
   const response = await fetch(`${API_URL}${path}`, {
-    headers: { 'Content-Type': 'application/json', ...options.headers },
     ...options,
+    headers: { 'Content-Type': 'application/json', ...options.headers },
   })
   if (!response.ok) {
     throw new Error(`API error: ${response.status}`)
